@@ -4,3 +4,10 @@ const bcrypt = require("bcrypt");
 
 dotenv.config();
 mongoose.connect(process.env.DB_LINK);
+
+
+
+
+module.exports = {
+    
+}
