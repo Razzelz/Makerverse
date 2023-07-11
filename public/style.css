@@ -3,3 +3,43 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+:root {
+        --dk-grey: #303030;
+        --grey: #565656;
+	--lt-grey: #D2D2D2;
+}
+
+body {
+    background-color: var(--dk-grey);
+}
+
+h1 {
+	color: var(--lt-grey);
+	float: left;
+}
+
+.logo {
+	height: 100px;
+	width: 100px;
+	float: left;
+}
+
+.top-navbar {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        padding: 12px 96px;
+	background-color: var(--grey);
+	color: white;
+}
+
+input {
+        background-color: var(--grey);
+        border: 3px solid var(--dk-grey);
+        padding: 12px;
+        border-radius: 4px;
+        margin-left: 20px;
+}
+

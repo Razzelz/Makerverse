@@ -191,8 +191,8 @@ app.put("/printers/:printerId" , function(req, res) {
         printer.layerThickness = req.body.layerThickness;
         printer.printSpeed = req.body.printSpeed;
         printer.other = req.body.other;
-        printer.likes = [];
-        model.Printer.findOneAndUpdate({"_id" : printerId} , blueprint , {new:true, runValidators:true})
+        printer.likes = req.body.likes;
+        model.Printer.findOneAndUpdate({"_id" : printerId} , printer , {new:true, runValidators:true})
         .then((results) => {
             res.status(200).send("Printer setup Updated")
         }).catch((errors) => {
@@ -347,4 +347,3 @@ app.delete("/session" , function(req, res) {
 app.listen(port, function() {
     console.log("Server Started Locally on Port",port);
 });
-

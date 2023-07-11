@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema({
 const PrinterSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: [True, "Setup must have a printer name"]
+        required: [true, "Setup must have a printer name"]
     },
     user: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     nozzleTemp: Number,
@@ -40,7 +40,7 @@ const PrinterSchema = new mongoose.Schema({
 const BlueprintSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: [True, "Blueprint must have a title"]
+        required: [true, "Blueprint must have a title"]
     },
     description: String,
     // photos: , !!Will be finished with Multer!!
