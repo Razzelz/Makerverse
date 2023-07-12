@@ -18,14 +18,53 @@ body {
 
 h1 {
 	color: var(--lt-grey);
+	font-size: 30px;
 	float: left;
+	padding-top: 30px;
 }
 
-input.search {
-	border: 1px solid #555;
-	width: 100%;
-	padding: 9px 4px 9px 40px;
-	background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 13px center;
+input {
+	border: 3px solid var(--dk-grey);
+	border-radius: 5px;
+	width: 500px;
+	color: var(--lt-grey);
+	background: transparent;
+	font-size: 18px;
+	padding: 5px;
+	padding-left: 35px;
+}
+
+::placeholder {
+	color: var(--lt-grey);
+}
+
+.search {
+	position: relative;
+}
+
+.search img {
+	position: absolute;
+	top: 8px;
+	left: 10px;
+}
+
+a:link {
+	text-decoration: none;
+	color: var(--lt-grey);
+	font-size: 18px;
+}
+
+a:visited {
+	text-decoration: none;
+	color: var(--lt-grey);
+	font-size: 18px;
+}
+
+.sign-up {
+	border: 2px solid var(--lt-grey);
+	border-radius: 5px;
+	padding: 8px 15px 8px 15px;
+	margin-left: 15px;
 }
 
 .logo {
@@ -92,7 +131,7 @@ input.search {
 
 .top-navbar {
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: center;
         width: 100%;
         padding: 12px 96px;
@@ -100,16 +139,4 @@ input.search {
 	color: white;
 }
 
-input {
-        background-color: var(--grey);
-        border: 3px solid var(--dk-grey);
-	color: var(--lt-grey);
-        padding: 12px;
-        border-radius: 4px;
-        margin-left: 20px;
-}
-
-::placeholder {
-	color: var(--lt-grey);
-}
 

@@ -24,7 +24,7 @@ const storage = new GridFsStorage({
           filename: `${Date.now()}_${file.originalname}`,
         }
       }
-      else if (file.mimetype === "application/sla") {
+      else if (file.mimetype === "model/stl") {
         return {
             bucketName: "blueprints",
             filename: `${Date.now()}_${file.originalname}`,
@@ -382,7 +382,6 @@ app.get("/images", async (req, res) => {
     const database = mongoClient.db("test")
     var images = database.collection("photos.files");
     var cursor = images.find({});
-    console.log(cursor)
     if (!cursor) {
         return res.status(404).send({
             message: "Error: No Images Found"
@@ -442,7 +441,6 @@ app.get("/images/:filename" , async (req, res) => {
     const database = mongoClient.db("test")
     var files = database.collection("blueprints.files");
     var cursor = files.find({});
-    console.log(cursor)
     if (!cursor) {
         return res.status(404).send({
             message: "Error: No Files Found"
@@ -458,12 +456,35 @@ app.get("/images/:filename" , async (req, res) => {
       res.send({ files: allFiles })
 });
 
-app.get("/files/:filename" , async (req, res) => {
+app.get("/files/:filename", async (req, res) => {
+    await mongoClient.connect()
+
+    var name = req.params.filename;
+    const database = mongoClient.db("test")
+    var files = database.collection("blueprints.files");
+    var cursor = files.find({filename: name});
+    if (!cursor) {
+        return res.status(404).send({
+            message: "Error: No File Found"
+        })
+    }
+
+    const allFiles = []
+
+    await cursor.forEach(item => {
+        allFiles.push(item)
+      })
+
+      res.send({ file: allFiles })
+});
+
+//Used to download files
+app.get("/download/:filename" , async (req, res) => {
     await mongoClient.connect();
 
     const database = mongoClient.db("test")
-    const imageBucket = new GridFSBucket(database, {
-        bucketName: "files",
+    const fileBucket = new GridFSBucket(database, {
+        bucketName: "blueprints",
     });
 
     let downloadStream = fileBucket.openDownloadStreamByName(
@@ -475,7 +496,7 @@ app.get("/files/:filename" , async (req, res) => {
     })
 
     downloadStream.on("error" , function (data) {
-        return res.status(404).send({ error: "Image Not Found"})
+        return res.status(404).send({ error: "File Not Found"})
     })
 
     downloadStream.on("end", () => {
