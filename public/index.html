@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Makerverse</title>
     <link href="style.css" rel="stylesheet" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;600&display=swap" rel="stylesheet">
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
@@ -26,8 +29,28 @@
        <div class="makes">
 
        <div v-for="make in makes" class="row-body">
-               <div>{{make.description}}</div>
-               <div>{{make.category}}</div>
+	       <div class="make-listing">
+
+	       <div class="make-title">{{make.title}}</div>
+               <div class="make-creator">Creator: {{make.user.username}}</div>
+	       <div><img src="example.jpg" alt="Make Object" height="300" width="350"></div>
+
+	       <div class="flex-parent">
+		       <div class="flex-child">
+			       <div class="make-likes"><img src="heart.svg" alt="Like" height="40" width="40"></div>
+			       <div class="like-count">{{make.likes.length}}</div>
+		       </div>
+
+		       <div class="flex-child">
+			       <div class="download-btn">
+				       <img class="download-icon" src="download.svg" alt="Download">
+				       <span>Download</span>
+			       </div>
+		       </div>
+	       </div>
+
+	       </div>
+
        </div>
 
        <!--

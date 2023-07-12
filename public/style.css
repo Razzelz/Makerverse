@@ -2,12 +2,14 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
 }
 
 :root {
         --dk-grey: #303030;
         --grey: #565656;
 	--lt-grey: #D2D2D2;
+	--yellow: #DEBA3A;
 }
 
 body {
@@ -25,6 +27,62 @@ h1 {
 	float: left;
 }
 
+.make-listing {
+	color: var(--lt-grey);
+	margin: 50px 100px 10px;
+	background-color: var(--grey);
+	font-size: 18px;
+	width: 350px;
+}
+
+.make-title {
+	font-size: 30px;
+	padding: 15px 15px 5px
+}
+
+.make-creator {
+	font-size: 18px;
+	padding-left: 15px;
+	padding-bottom: 5px
+}
+
+.make-likes {
+	float: left;
+	margin: 11px 10px 10px 15px;
+}
+
+.like-count {
+	font-size: 30px;
+	align-items: center;
+	margin-top: 15px;
+}
+
+.flex-parent{
+	display: flex;
+}
+
+.flex-child{
+	flex: 1;
+}
+
+.download-icon {
+	height: 25px;
+	width: 25px;
+	float: right;
+}
+
+.download-btn {
+        background: var(--yellow);
+        color: black;
+        padding: 12px 16px;
+        border-radius: 7px;
+        cursor: pointer;
+	width: 165px;
+	align-items: center;
+	margin: 5px 10px 10px 15px;
+	float: right;
+}
+
 .top-navbar {
         display: flex;
         justify-content: flex-start;
@@ -38,8 +96,13 @@ h1 {
 input {
         background-color: var(--grey);
         border: 3px solid var(--dk-grey);
+	color: var(--lt-grey);
         padding: 12px;
         border-radius: 4px;
         margin-left: 20px;
+}
+
+::placeholder {
+	color: var(--lt-grey);
 }
 
