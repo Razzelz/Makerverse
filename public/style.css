@@ -23,10 +23,13 @@ h1 {
 	padding-top: 30px;
 }
 
+.search-mobile {
+	display: none;
+}
+
 input {
 	border: 3px solid var(--dk-grey);
 	border-radius: 5px;
-	width: 500px;
 	color: var(--lt-grey);
 	background: transparent;
 	font-size: 18px;
@@ -130,13 +133,106 @@ a:visited {
 }
 
 .top-navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        padding: 12px 96px;
-	background-color: var(--grey);
-	color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 5px 50px;
+    color: #171211;
+    background-color: var(--grey);
+    overflow: hidden;
 }
 
+/* Mobile view down here */
+@media screen and (max-width:955px) {
+	.top-navbar {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		padding: 5px 25px;
+		color: #171211;
+		background-color: var(--grey);
+		overflow: hidden;
+	}
 
+	h1 {
+		color: var(--lt-grey);
+		font-size: 30px;
+		float: left;
+		padding-top: 20px;
+	}
+
+	.search {
+		display: none;
+	}
+
+	.make-listing {
+		color: var(--lt-grey);
+		margin: auto;
+		width: 50%;
+		background-color: var(--grey);
+		font-size: 18px;
+		width: 350px;
+		margin-bottom: 30px;
+	}
+
+	.logo {
+		height: 70px;
+		width: 70px;
+		float: left;
+	}
+
+	a:link {
+		text-decoration: none;
+		color: var(--lt-grey);
+		font-size: 14px;
+	}
+
+	a:visited {
+		text-decoration: none;
+		color: var(--lt-grey);
+		font-size: 14px;
+	}
+
+	.sign-up {
+		border: 2px solid var(--lt-grey);
+		border-radius: 5px;
+		padding: 8px 10px 8px 10px;
+		margin-left: 10px;
+	}
+
+	input {
+		border: 3px solid var(--lt-grey);
+		border-radius: 5px;
+		background-color: transparent;
+		color: var(--lt-grey);
+		font-size: 18px;
+		padding: 5px;
+		padding-left: 10px;
+		width: 350px;
+	}
+
+	::placeholder {
+		color: var(--lt-grey);
+	}
+
+	.search-mobile {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+
+	.search-mobile img {
+		display: none;
+	}
+}
+
+/* Mobile view down here */
+@media screen and (max-width:500px) {
+	h1 {
+		display: none;
+	}
+}
