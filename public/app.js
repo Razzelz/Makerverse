@@ -1,3 +1,5 @@
+const URL = "http://localhost:8080/"
+
 Vue.createApp({
     data() {
         return {
@@ -12,13 +14,21 @@ Vue.createApp({
             getMakes: function() {
                     fetch("http://localhost:8080/blueprints/")
                             .then(response => response.json()).then((data) => {
+                                for (item in data) {
+                                        let updatedPhotos = []
+                                        for (photo in item.photos) {
+                                                updatedPhotos.push(URL + "imagedownload/" + photo)
+                                        }
+                                        item.photos = updatedPhotos
+                                }
                                     this.makes = data;
 				    console.log(this.makes);
                             })
             },
 	    viewMake: function(make) {
 		    this.page = 'viewMake';
-		    console.log(make);
+                    this.selectedMake = make;
+		    console.log(this.selectedMake);
 	    },
 	    likeMake: function() {
 		    console.log("This likes a make");

@@ -6,8 +6,8 @@
 }
 
 :root {
-        --dk-grey: #303030;
-        --grey: #565656;
+	--dk-grey: #303030;
+	--grey: #565656;
 	--lt-grey: #D2D2D2;
 	--yellow: #DEBA3A;
 }
@@ -91,6 +91,21 @@ a:visited {
 	background-color: var(--grey);
 	font-size: 18px;
 	width: 350px;
+}
+
+.view-make-listing {
+	color: var(--lt-grey);
+	margin-top: 50px;
+	margin-left: 30px;
+	margin-right: 30px;
+	background-color: var(--grey);
+	font-size: 18px;
+	width: 350px;
+}
+
+.view-make-page {
+	display: flex;
+	justify-content: center;
 }
 
 .make-title {

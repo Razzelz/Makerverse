@@ -39,7 +39,24 @@
 	</div>
 
 	<div class="view-make-page" v-if="page === 'viewMake'">
-		<div class="view-make">
+		<div class="view-make-listing">
+			<div class="make-title">{{selectedMake.title}}</div>
+			<div class="make-creator">Creator: {{selectedMake.user.username}}</div>
+
+		    <div class="flex-parent">
+				<div class="flex-child">
+					<div class="make-likes" @click="likeMake()"><img src="heart.svg" alt="Like" height="40" width="40"></div>
+					<div class="like-count">{{selectedMake.likes.length}}</div>
+				</div>
+
+				<div class="flex-child">
+					<div class="download-btn" @click="downloadMake()">
+						<img class="download-icon" src="download.svg" alt="Download">
+						<span>Download</span>
+					</div>
+				</div>
+	       	</div>
+
 		</div>
 	</div>
 
@@ -50,7 +67,7 @@
 
 		       <div class="make-title" @click="viewMake()">{{make.title}}</div>
 		       <div class="make-creator" @click="viewMake()">Creator: {{make.user.username}}</div>
-		       <div class="a"><img src="example.jpg" alt="Make Object" @click="viewMake()" height="300" width="350"></div>
+		       <div class="a"><img :src="make.photos[0]" alt="Make Object" @click="viewMake()" height="300" width="350"></div>
 
 		       <div class="flex-parent">
 			       <div class="flex-child">
@@ -63,8 +80,8 @@
 					       <img class="download-icon" src="download.svg" alt="Download">
 					       <span>Download</span>
 				       </div>
-			       </div>
-	       </div>
+			    	</div>
+	       		</div>
 
 
        </div>
@@ -73,7 +90,7 @@
 
 		       <div class="make-title" @click="viewMake(make)">{{make.title}}</div>
 		       <div class="make-creator" @click="viewMake(make)">Creator: {{make.user.username}}</div>
-		       <div class="a"><img src="example.jpg" alt="Make Object" @click="viewMake(make)" height="300" width="350"></div>
+		       <div class="a"><img :src="make.photos[0]" alt="Make Object" @click="viewMake(make)" height="300" width="350"></div>
 
 		       <div class="flex-parent">
 			       <div class="flex-child">
@@ -87,11 +104,8 @@
 					       <span>Download</span>
 				       </div>
 			       </div>
-	       </div>
-
-
-       </div>
-
+	       		</div>
+       		</div>
     </div>
 
 
