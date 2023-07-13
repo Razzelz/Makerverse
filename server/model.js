@@ -43,8 +43,14 @@ const BlueprintSchema = new mongoose.Schema({
         required: [true, "Blueprint must have a title"]
     },
     description: String,
-    // photos: , !!Will be finished with Multer!!
-    // files: ,
+    photos: {
+        type: Array,
+        required: [true, "An image is required"]
+    },
+    files: {
+        type: Array,
+        required: [true, "A file must be attached to the blueprint"]
+    },
     components: String,
     printSetup: [{type: mongoose.Schema.Types.ObjectId, ref: "Printer"}],
     likes: Array,

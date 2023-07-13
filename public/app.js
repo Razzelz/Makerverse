@@ -1,7 +1,11 @@
 Vue.createApp({
     data() {
         return {
-		makes: []
+		page: "home",
+		makes: [],
+		filteredMakes: [],
+		selectedMake: [],
+		search: ""
         }
     },
     methods : {
@@ -9,10 +13,12 @@ Vue.createApp({
                     fetch("http://localhost:8080/blueprints/")
                             .then(response => response.json()).then((data) => {
                                     this.makes = data;
+				    console.log(this.makes);
                             })
             },
-	    viewMake: function() {
-		    console.log("This takes to new page");
+	    viewMake: function(make) {
+		    this.page = 'viewMake';
+		    console.log(make);
 	    },
 	    likeMake: function() {
 		    console.log("This likes a make");
@@ -26,5 +32,12 @@ Vue.createApp({
     },
     created : function() {
 	    this.getMakes();
-    }
+    },
+    watch: {
+        search(newSearch, oldSearch) {
+                this.filteredMakes = this.makes.filter((make) => {
+                        return make.title.toLowerCase().includes(newSearch.toLowerCase());
+                });
+        }
+}
 }).mount("#app");

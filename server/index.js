@@ -48,6 +48,7 @@ app.use(cors({
 app.use(express.json());
 app.use(session({
     secret: "jao84028jhf9ja8he03089j920j00nv0hg8halpmzx",
+    cookie: {secure: false, httpOnly: false, sameSite: "lax"},
     saveUninitialized: true,
     resave: false,
 }));
@@ -101,8 +102,8 @@ app.post("/blueprints" , function(req, res) {
     var newBlueprint = new model.Blueprint({
         title: req.body.title,
         description: req.body.description,
-        // photos: , !!Will be finished with Multer!!
-        // files: ,
+        photos: req.body.photos,
+        files: req.body.files,
         components: req.body.components,
         printSetup: req.body.printSetup,
         likes: [],
@@ -334,8 +335,7 @@ app.delete("/users/:userId" , function(req, res) {
 
 //Session
 app.get("/session" , function(req, res) {
-    console.log(req.session);
-    res.send()
+    res.send(req.session)
 });
 
 app.post("/session" , function(req, res) {
@@ -349,7 +349,7 @@ app.post("/session" , function(req, res) {
                     if (result) {
                         //password matches
                         req.session.userId = user._id;
-                        req.session.firstName = user.username;
+                        req.session.username = user.username;
                         res.status(201).send("Session Created")
                     }
                     else {
@@ -370,7 +370,7 @@ app.post("/session" , function(req, res) {
 
 app.delete("/session" , function(req, res) {
     req.session.userId = undefined;
-    req.session.name = undefined;
+    req.session.username = undefined;
 
     res.status(204).send("Session Deleted");
 });
@@ -398,40 +398,58 @@ app.get("/images", async (req, res) => {
 });
 
 app.get("/images/:filename" , async (req, res) => {
-    await mongoClient.connect();
+    await mongoClient.connect()
 
+    var name = req.params.filename;
     const database = mongoClient.db("test")
-    const imageBucket = new GridFSBucket(database, {
-        bucketName: "photos",
-    });
+    var photos = database.collection("photos.files");
+    var cursor = photos.find({filename: name});
+    if (!cursor) {
+        return res.status(404).send({
+            message: "Error: No Image Found"
+        })
+    }
 
-    let downloadStream = imageBucket.openDownloadStreamByName(
+    const allImages = []
+
+    await cursor.forEach(item => {
+        allImages.push(item)
+      })
+
+      res.send({ image: allImages })
+})
+
+app.get("/imagedownload/:filename" , async (req, res) => {
+    const database = mongoClient.db("test");
+    const fileBucket = new GridFSBucket(database, {
+        bucketName: "photos"
+    })
+
+    let downloadStream = fileBucket.openDownloadStreamByName(
         req.params.filename
     )
 
-    downloadStream.on("data" , function (data) {
+    downloadStream.on("data" , function(data) {
         return res.status(200).write(data)
     })
 
     downloadStream.on("error" , function (data) {
-        return res.status(404).send({ error: "Image Not Found"})
+        return res.status(404).send({error: "Image not Found"})
     })
 
-    downloadStream.on("end", () => {
+    downloadStream.on("end" , () => {
         return res.end()
     })
-})
+});
 
   app.post("/images", upload.single("image") ,function(req, res) {
-    res.send(req.file);
-    // const file = req.file
-    // Respond with the file details
-    // res.send({
-    //   message: "Uploaded",
-    //   id: file.id,
-    //   name: file.filename,
-    //   contentType: file.contentType,
-    // })
+    const file = req.file;
+    res.send({
+        message: "Uploaded",
+        id: file.id,
+        name: file.filename,
+        contentType: file.contentType
+    })
   });
 
   //Blueprint Files
@@ -478,8 +496,10 @@ app.get("/files/:filename", async (req, res) => {
       res.send({ file: allFiles })
 });
 
-//Used to download files
-app.get("/download/:filename" , async (req, res) => {
+//Downloads are necessary to access actual file information
+//Normal get functions only pull file descriptors
+//Actual download functions need to be applied in HTML
+app.get("/filedownload/:filename" , async (req, res) => {
     await mongoClient.connect();
 
     const database = mongoClient.db("test")
@@ -505,7 +525,13 @@ app.get("/download/:filename" , async (req, res) => {
 });
 
 app.post("/files", upload.single("file") ,function(req, res) {
-    res.send(req.file);
+    const file = req.file;
+    res.send({
+        message: "Uploaded",
+        id: file.id,
+        name: file.filename,
+        contentType: file.contentType
+    })
   });
 
 app.listen(port, function() {
