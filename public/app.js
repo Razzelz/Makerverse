@@ -7,19 +7,32 @@ Vue.createApp({
 		makes: [],
 		filteredMakes: [],
 		selectedMake: [],
-		search: ""
+		search: "",
+                current_user: {
+                        username: "0",
+                        email: "",
+                        password: ""
+                },
+                request: "hide",
         }
     },
     methods : {
             getMakes: function() {
                     fetch("http://localhost:8080/blueprints/")
                             .then(response => response.json()).then((data) => {
-                                for (item in data) {
+                                for (item of data) {
                                         let updatedPhotos = []
-                                        for (photo in item.photos) {
+                                        for (photo of item.photos) {
                                                 updatedPhotos.push(URL + "imagedownload/" + photo)
                                         }
                                         item.photos = updatedPhotos
+                                }
+                                for (item of data) {
+                                        let updatedFiles = []
+                                        for (file of item.files) {
+                                                updatedFiles.push(URL + "filedownload/" + file)
+                                        }
+                                        item.files = updatedFiles
                                 }
                                     this.makes = data;
 				    console.log(this.makes);
@@ -30,15 +43,36 @@ Vue.createApp({
                     this.selectedMake = make;
 		    console.log(this.selectedMake);
 	    },
-	    likeMake: function() {
-		    console.log("This likes a make");
+	    likeMake: function(make) {
+                if (this.current_user.username = "0") {
+                        this.signInRequest()
+                        return
+                }
+                else {
+                        index = make.likes.indexOf(this.current_user.username);
+                        if (index < 0) {
+                                make.likes.append(this.current_user.username);
+                        }
+                        else {
+                                make.likes.splice(index, 1);
+                        }
+                }
 	    },
+            signInRequest: function() {
+                this.request = "show"
+                setTimeout(() => {
+                        this.request = "hide"
+                }, 3000)
+        },
 	    downloadMake: function() {
 		    console.log("This downloads a make");
 	    },
 	    home: function() {
+                // will need to be changed when sign in is functional
+                this.selectedMake = [];
+                this.page = "home"
 		    console.log("This takes to home page");
-	    }
+	    },
     },
     created : function() {
 	    this.getMakes();

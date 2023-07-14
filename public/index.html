@@ -16,47 +16,50 @@
 
 <body>
     <div id="app">
-        <nav class="top-navbar">
-		<div>
-			<img class="logo" src="gear.svg" alt="Gear" @click="home()">
-			<h1 @click="home()">Makerverse</h1>
-		</div>
+		<nav class="top-navbar">
+			<div @click="home()" style="cursor: pointer;">
+				<img class="logo" src="gear.svg" alt="Gear" @click="home()">
+				<h1 @click="home()">Makerverse</h1>
+			</div>
 
-		<div class="search" v-if="page === 'home'">
+			<div class="search" v-if="page === 'home'">
+				<input type="text" v-model="search" placeholder="Search..."></input>
+				<img src="search.svg" alt="Search Icon" height="20" width="20">
+			</div>
+
+			<div class="links">
+				<a href="#">Sign in</a>
+				<a class="sign-up" href="#">Sign Up</a>
+				<div v-if="request === 'show'" class="sign-in-request">Please Sign In</div>
+			</div>
+		</nav>
+
+		<div class="search-mobile" v-if="page === 'home'">
 			<input type="text" v-model="search" placeholder="Search..."></input>
 			<img src="search.svg" alt="Search Icon" height="20" width="20">
 		</div>
-
-                <div class="links">
-			<a href="#">Sign in</a>
-                        <a class="sign-up" href="#">Sign up</a>
-		</div>
-        </nav>
-
-	<div class="search-mobile" v-if="page === 'home'">
-		<input type="text" v-model="search" placeholder="Search..."></input>
-		<img src="search.svg" alt="Search Icon" height="20" width="20">
-	</div>
+		
 
 	<div class="view-make-page" v-if="page === 'viewMake'">
 		<div class="view-make-listing">
 			<div class="make-title">{{selectedMake.title}}</div>
 			<div class="make-creator">Creator: {{selectedMake.user.username}}</div>
+			<div class="make-img-container"><img :src="selectedMake.photos[0]"></div>
 
 		    <div class="flex-parent">
 				<div class="flex-child">
-					<div class="make-likes" @click="likeMake()"><img src="heart.svg" alt="Like" height="40" width="40"></div>
+					<div v-if="!selectedMake.likes.includes(current_user.username)" class="make-likes" @click="likeMake(selectedMake)"><img src="heart.svg" alt="Like" height="40" width="40"></div>
+					<div v-else class="make-likes" @click="likeMake(selectedMake)"><img src="heart-filled.svg" alt="Like" height="40" width="40"></div>
 					<div class="like-count">{{selectedMake.likes.length}}</div>
 				</div>
 
 				<div class="flex-child">
-					<div class="download-btn" @click="downloadMake()">
+					<div class="download-btn"><a :href="selectedMake.files[0]" :download="selectedMake.files[0].substr(49)">
 						<img class="download-icon" src="download.svg" alt="Download">
-						<span>Download</span>
+						<span>Download</span></a>
 					</div>
 				</div>
 	       	</div>
-
 		</div>
 	</div>
 
@@ -67,19 +70,20 @@
 
 		       <div class="make-title" @click="viewMake()">{{make.title}}</div>
 		       <div class="make-creator" @click="viewMake()">Creator: {{make.user.username}}</div>
-		       <div class="a"><img :src="make.photos[0]" alt="Make Object" @click="viewMake()" height="300" width="350"></div>
+		       <div class="a"><img :src="make.photos[0]" alt="Make Object" @click="viewMake()"></div>
 
 		       <div class="flex-parent">
 			       <div class="flex-child">
-				       <div class="make-likes" @click="likeMake()"><img src="heart.svg" alt="Like" height="40" width="40"></div>
+					<div v-if="!make.likes.includes(current_user.username)" class="make-likes" @click="likeMake()"><img src="heart.svg" alt="Like" height="40" width="40"></div>
+					<div v-else class="make-likes" @click="likeMake()"><img src="heart-filled.svg" alt="Like" height="40" width="40"></div>
 				       <div class="like-count">{{make.likes.length}}</div>
 			       </div>
 
 			       <div class="flex-child">
-				       <div class="download-btn" @click="downloadMake()">
-					       <img class="download-icon" src="download.svg" alt="Download">
-					       <span>Download</span>
-				       </div>
+						<div class="download-btn"><a :href="make.files[0]" :download="make.files[0].substr(49)">
+							<img class="download-icon" src="download.svg" alt="Download">
+							<span>Download</span>
+						</a></div>
 			    	</div>
 	       		</div>
 
@@ -90,23 +94,27 @@
 
 		       <div class="make-title" @click="viewMake(make)">{{make.title}}</div>
 		       <div class="make-creator" @click="viewMake(make)">Creator: {{make.user.username}}</div>
-		       <div class="a"><img :src="make.photos[0]" alt="Make Object" @click="viewMake(make)" height="300" width="350"></div>
+		       <div class="a"><img :src="make.photos[0]" alt="Make Object" @click="viewMake(make)"></div>
 
 		       <div class="flex-parent">
 			       <div class="flex-child">
-				       <div class="make-likes" @click="likeMake()"><img src="heart.svg" alt="Like" height="40" width="40"></div>
+					<div v-if="!make.likes.includes(current_user.username)" class="make-likes" @click="likeMake(make)"><img src="heart.svg" alt="Like" height="40" width="40"></div>
+					<div v-else class="make-likes" @click="likeMake(make)"><img src="heart-filled.svg" alt="Like" height="40" width="40"></div>
 				       <div class="like-count">{{make.likes.length}}</div>
 			       </div>
 
 			       <div class="flex-child">
-				       <div class="download-btn" @click="downloadMake()">
+				       <div class="download-btn"><a :href="make.files[0]" :download="make.files[0].substr(49)">
 					       <img class="download-icon" src="download.svg" alt="Download">
 					       <span>Download</span>
-				       </div>
+					   </a></div>
 			       </div>
 	       		</div>
        		</div>
     </div>
+
+
+
 
 
     </div>

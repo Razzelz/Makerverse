@@ -12,6 +12,18 @@
 	--yellow: #DEBA3A;
 }
 
+.sign-in-request {
+	position: fixed;
+	font-size: 10px;
+	top: 0;
+	right: 0px;
+	padding: 5px;
+	background-color: var(--lt-grey);
+	color: var(--dk-grey);
+	border-radius: 5px;
+	font-weight: bold;
+}
+
 body {
     background-color: var(--dk-grey);
 }
@@ -83,6 +95,18 @@ a:visited {
 	justify-content: center;
 }
 
+.a {
+	height: 300px;
+	width: 350px;
+	overflow: hidden
+}
+
+.a img {
+	width: inherit;
+	height: inherit;
+	object-fit: cover;
+}
+
 .make-listing {
 	color: var(--lt-grey);
 	margin-top: 50px;
@@ -119,9 +143,22 @@ a:visited {
 	padding-bottom: 5px
 }
 
+.make-img-container {
+	height: 300px;
+	width: 350px;
+	overflow: hidden
+}
+
+.make-img-container img {
+	width: inherit;
+	height: inherit;
+	object-fit: cover;
+}
+
 .make-likes {
 	float: left;
 	margin: 11px 10px 10px 15px;
+	cursor: pointer;
 }
 
 .like-count {
@@ -154,6 +191,11 @@ a:visited {
 	align-items: center;
 	margin: 5px 10px 10px 15px;
 	float: right;
+}
+
+.download-btn span {
+	color: black;
+	font-size: large;
 }
 
 .top-navbar {
