@@ -28,8 +28,8 @@
 			</div>
 
 			<div class="links">
-				<a href="#">Sign in</a>
-				<a class="sign-up" href="#">Sign Up</a>
+				<a href="#" @click="toSignIn()">Sign in</a>
+				<a class="sign-up" href="#" @click="toSignUp()">Sign Up</a>
 				<div v-if="request === 'show'" class="sign-in-request">Please Sign In</div>
 			</div>
 		</nav>
@@ -112,6 +112,35 @@
 	       		</div>
        		</div>
     </div>
+
+	<div v-show="authModal" class="auth-modal">
+		<div class="auth-image-cont">
+			<img src="gear.svg">
+		</div>
+		<div v-if="authType == 'in'" class="auth-parent">
+			<h1>Welcome Back to Makerverse</h1>
+			<div class="make-title">Sign In</div>
+			<input type="email" placeholder="E-Mail">
+			<input type="text" placeholder="Password">
+			<div>
+				<p>Not a Member? <a class="switch-auth" @click="toSignUp">Sign Up</a></p>
+			</div>
+			<button class="auth-btn">Sign In</button>
+		</div>
+		<div v-if="authType == 'up'" class="auth-parent">
+			<h1>Welcome to Makerverse</h1>
+			<input type="text" placeholder="Username">
+			<input type="email" placeholder="E-Mail">
+			<input type="text" placeholder="Password">
+			<div>
+				<p>Already a Member? <a class="switch-auth" @click="toSignIn()">Sign In</a></p>
+			</div>
+			<button class="auth-btn">Sign Up</button>
+		</div>
+		<div>
+			<button class="home-btn" @click="home()">Home</button>
+		</div>
+	</div>
 
 
 

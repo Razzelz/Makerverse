@@ -14,6 +14,8 @@ Vue.createApp({
                         password: ""
                 },
                 request: "hide",
+                authModal: false,
+                authType: "up"
         }
     },
     methods : {
@@ -73,6 +75,14 @@ Vue.createApp({
                 this.page = "home"
 		    console.log("This takes to home page");
 	    },
+            toSignIn: function () {
+                this.authModal = true;
+                this.authType = "in";
+            },
+            toSignUp: function() {
+                this.authModal = true;
+                this.authType = "up"
+            }
     },
     created : function() {
 	    this.getMakes();
