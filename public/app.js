@@ -72,6 +72,7 @@ Vue.createApp({
 	    home: function() {
                 // will need to be changed when sign in is functional
                 this.selectedMake = [];
+                this.authModal = false;
                 this.page = "home"
 		    console.log("This takes to home page");
 	    },
