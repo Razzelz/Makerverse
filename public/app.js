@@ -45,6 +45,20 @@ Vue.createApp({
 				    console.log(this.makes);
                             })
             },
+            updateMake: function(make) { //Not Finished
+                //Need to convert image and file names back to original...RIP
+                var updatedMake = make;
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type" , "application/json");
+
+                var options = {
+                        method: "PUT",
+                        body: updatedMake,
+                        headers: myHeaders
+                };
+
+                var makeId = updatedMake._id
+            },
 	    viewMake: function(make) {
 		    this.page = 'viewMake';
                     this.selectedMake = make;
