@@ -129,8 +129,8 @@ app.put("/blueprints/:blueprintId" , function(req, res) {
     model.Blueprint.findOne({"_id" : blueprintId}).then((blueprint) => {
         blueprint.title =  req.body.title;
         blueprint.description = req.body.description;
-        // blueprint.photos = ; !!Will be finished with Multer!!
-        // blueprint.files = ;
+        blueprint.photos = req.body.photos;
+        blueprint.files = req.body.files;
         blueprint.components = req.body.components;
         blueprint.printSetup =  req.body.printSetup;
         blueprint.likes = req.body.likes;
@@ -350,7 +350,7 @@ app.post("/session" , function(req, res) {
                         //password matches
                         req.session.userId = user._id;
                         req.session.username = user.username;
-                        res.status(201).send("Session Created")
+                        res.status(201).send(req.session)
                     }
                     else {
                         //password doesn't match

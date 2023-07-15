@@ -9,7 +9,12 @@ Vue.createApp({
 		selectedMake: [],
 		search: "",
                 current_user: {
-                        username: "0",
+                        username: "",
+                        email: "",
+                        password: ""
+                },
+                user_auth: {
+                        username: "",
                         email: "",
                         password: ""
                 },
@@ -46,14 +51,14 @@ Vue.createApp({
 		    console.log(this.selectedMake);
 	    },
 	    likeMake: function(make) {
-                if (this.current_user.username = "0") {
+                if (this.current_user.username == "") {
                         this.signInRequest()
                         return
                 }
                 else {
                         index = make.likes.indexOf(this.current_user.username);
                         if (index < 0) {
-                                make.likes.append(this.current_user.username);
+                                make.likes.push(this.current_user.username);
                         }
                         else {
                                 make.likes.splice(index, 1);
@@ -83,7 +88,65 @@ Vue.createApp({
             toSignUp: function() {
                 this.authModal = true;
                 this.authType = "up"
-            }
+            },
+            signup: function() {
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type" , "application/json");
+
+                var options = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: JSON.stringify(this.user_auth)
+                };
+
+                fetch(URL + "users", options)
+                .then((response) => {
+                        if (response.status === 201) {
+                                console.log("Signup Complete")
+                                this.createSession()
+                        }
+                        else {
+                                alert("Could not Create User")
+                        }
+                })
+            },
+            createSession: function() {
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type" , "application/json");
+
+                var options = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: JSON.stringify(this.user_auth),
+                        credentials: 'include'
+                };
+
+                fetch(URL + "session", options)
+                .then((response) => {
+                        if (response.status === 201) {
+                                response.text().then(data => {
+                                        if (data) {
+                                                data = JSON.parse(data);
+                                                this.page = "home",
+                                                this.authModal = false,
+                                                this.current_user.username = data.username
+                                                this.current_user.email = this.user_auth.email;
+                                                this.user_auth = {
+                                                        username: "",
+                                                        email: "",
+                                                        password: "",
+                                                }
+                                        }
+                                        else {
+                                                alert("Cannot Log In")
+                                        }
+                                })
+                        }
+                        else {
+                                alert("Could not create session")
+                        }
+                })
+            },
     },
     created : function() {
 	    this.getMakes();

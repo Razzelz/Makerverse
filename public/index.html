@@ -120,26 +120,46 @@
 		<div v-if="authType == 'in'" class="auth-parent">
 			<h1>Welcome Back to Makerverse</h1>
 			<div class="make-title">Sign In</div>
-			<input type="email" placeholder="E-Mail">
-			<input type="text" placeholder="Password">
+			<input type="email" placeholder="E-Mail" v-model="user_auth.email">
+			<input type="text" placeholder="Password" v-model="user_auth.password">
 			<div>
 				<p>Not a Member? <a class="switch-auth" @click="toSignUp">Sign Up</a></p>
 			</div>
-			<button class="auth-btn">Sign In</button>
+			<button class="auth-btn" @click="createSession()">Sign In</button>
 		</div>
 		<div v-if="authType == 'up'" class="auth-parent">
 			<h1>Welcome to Makerverse</h1>
-			<input type="text" placeholder="Username">
-			<input type="email" placeholder="E-Mail">
-			<input type="text" placeholder="Password">
+			<input type="text" placeholder="Username" v-model="user_auth.username">
+			<input type="email" placeholder="E-Mail" v-model="user_auth.email">
+			<input type="text" placeholder="Password" v-model="user_auth.password">
 			<div>
 				<p>Already a Member? <a class="switch-auth" @click="toSignIn()">Sign In</a></p>
 			</div>
-			<button class="auth-btn">Sign Up</button>
+			<button class="auth-btn" @click="signup()">Sign Up</button>
 		</div>
 		<div>
 			<button class="home-btn" @click="home()">Home</button>
 		</div>
+	</div>
+
+	<div v-if="page === 'create'" class="view-make-page">
+		<div class="view-make-listing">
+			<input type="text" placeholder="Make Name">
+			<input type="text" placeholder="Description">
+		</div>
+
+		<div class="view-make-listing">
+			<!-- Will need to figure out how to submit form with page... -->
+			<form enctype="multipart/form-data" id="data" @submit.prevent="uploadImage()">
+				<input type="file" name="images" accept="image/jpeg, image.png">
+			</form>
+		</div>
+
+		<div class="view-make-listing">
+			<input type="text" placeholder="Required Components">
+		</div>
+
+		<!-- Maybe a section for adding personal printer setup -->
 	</div>
 
 
