@@ -105,6 +105,7 @@ a:visited {
 	width: inherit;
 	height: inherit;
 	object-fit: cover;
+	cursor: pointer;
 }
 
 .make-listing {
@@ -127,6 +128,25 @@ a:visited {
 	width: 350px;
 }
 
+.make-details{
+	color: var(--lt-grey);
+	margin-top: 30px;
+	margin-left: 30px;
+	margin-right: 30px;
+	padding-bottom: 30px;
+	background-color: var(--grey);
+	font-size: 18px;
+	width: 350px;
+}
+
+.description-text {
+	padding: 15px 15px 15px 15px;
+}
+
+.print-setup {
+	padding: 15px 15px 5px 15px;
+}
+
 .view-make-page {
 	display: flex;
 	justify-content: center;
@@ -134,25 +154,34 @@ a:visited {
 
 .make-title {
 	font-size: 30px;
-	padding: 15px 15px 5px
+	padding: 15px 15px 5px;
+	cursor: pointer;
+}
+
+.view-make-title {
+	font-size: 30px;
+	padding: 15px 15px 5px;
 }
 
 .make-creator {
 	font-size: 18px;
 	padding-left: 15px;
-	padding-bottom: 5px
+	padding-bottom: 5px;
+	cursor: pointer;
 }
 
 .make-img-container {
 	height: 300px;
 	width: 350px;
-	overflow: hidden
+	overflow: hidden;
+	cursor: pointer;
 }
 
 .make-img-container img {
 	width: inherit;
 	height: inherit;
 	object-fit: cover;
+	cursor: pointer;
 }
 
 .make-likes {
@@ -179,23 +208,46 @@ a:visited {
 	height: 25px;
 	width: 25px;
 	float: right;
+	text-decoration: none;
 }
 
 .download-btn {
-        background: var(--yellow);
-        color: black;
-        padding: 12px 16px;
-        border-radius: 7px;
-        cursor: pointer;
+	background: var(--yellow);
+	color: black;
+	padding: 12px 16px;
+	border-radius: 7px;
+	cursor: pointer;
 	width: 165px;
 	align-items: center;
 	margin: 5px 10px 10px 15px;
 	float: right;
+	text-decoration: none;
 }
 
 .download-btn span {
 	color: black;
 	font-size: large;
+	text-decoration: none;
+}
+
+.back-button {
+	margin-top: 50px;
+	font-size: 18px;
+	padding: 10px 15px 30px 15px;
+	height: 35px;
+	border: 2px solid var(--yellow);
+	color: var(--yellow);
+	border-radius: 5px;
+	transition: 0.3s;
+}
+
+.spacer {
+	width: 70px;
+}
+
+.back-button:hover {
+	background-color: var(--yellow);
+	color: var(--dk-grey);
 }
 
 .top-navbar {
@@ -249,6 +301,10 @@ a:visited {
 	cursor: pointer;
 }
 
+.switch-auth:hover {
+	text-decoration: underline;
+}
+
 .auth-btn {
 	background-color: var(--grey);
 	border: var(--yellow) 1px solid;
@@ -257,6 +313,7 @@ a:visited {
 	color: var(--yellow);
 	border-radius: 5px;
 	cursor: pointer;
+	transition: 0.3s;
 }
 
 .auth-btn:hover {
@@ -276,6 +333,12 @@ a:visited {
 	color: var(--yellow);
 	border-radius: 5px;
 	cursor: pointer;
+	transition: 0.3s;
+}
+
+.home-btn:hover {
+	background-color: var(--yellow);	
+	color: var(--dk-grey);
 }
 
 /* Mobile view down here */
@@ -330,11 +393,23 @@ a:visited {
 		font-size: 14px;
 	}
 
+	a:hover {
+		text-decoration: underline;		
+	}
+
 	.sign-up {
 		border: 2px solid var(--lt-grey);
 		border-radius: 5px;
 		padding: 8px 10px 8px 10px;
 		margin-left: 10px;
+		text-decoration: none;
+		transition: 0.3s;
+	}
+
+	.sign-up:hover {
+		border-color: var(--yellow);		
+		color: var(--yellow);
+		text-decoration: none;
 	}
 
 	input {

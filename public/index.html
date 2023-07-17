@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Makerverse</title>
+	<link rel="icon" type="image/x-icon" href="gear.svg">
     <link href="style.css" rel="stylesheet" type="text/css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,6 +42,7 @@
 		
 
 	<div class="view-make-page" v-if="page === 'viewMake'">
+		<div class="back-button" @click="home()">Back</div>
 		<div class="view-make-listing">
 			<div class="make-title">{{selectedMake.title}}</div>
 			<div class="make-creator">Creator: {{selectedMake.user.username}}</div>
@@ -60,6 +62,30 @@
 					</div>
 				</div>
 	       	</div>
+		</div>
+	</div>
+
+	<div class="view-make-page" v-if="page === 'viewMake'">
+		<div class="spacer"></div>
+		<div class="make-details">
+			<div class="view-make-title">Description</div>
+			<div class="description-text">{{selectedMake.description}}</div>
+		</div>
+	</div>
+
+	<div class="view-make-page" v-if="page === 'viewMake'">
+		<div class="spacer"></div>
+		<div class="make-details">
+			<div class="view-make-title">Printer Setups</div>
+			<div class="print-setup" v-for="printer in selectedMake.printSetup">
+				<span @click="displayPrintDetails()" v-if="showPrintDetails === 'hidden'">{{printer.title}}&and;</span>
+				<span>Nozzle Temp:</span>
+				<span>Bed Temp</span>
+				<span>Layer Thickness</span>
+				<span>Print Speed</span>
+				<span>Other</span>
+				<span @click="displayPrintDetails()" v-else="showPrintDetails === 'shown'">{{printer.title}}&or;</span>
+			</div>
 		</div>
 	</div>
 
@@ -144,14 +170,20 @@
 
 	<div v-if="page === 'create'" class="view-make-page">
 		<div class="view-make-listing">
-			<input type="text" placeholder="Make Name">
-			<input type="text" placeholder="Description">
+			<input type="text" placeholder="Make Name" v-model="newMake.title">
+			<input type="text" placeholder="Description" v-model="newMake.description">
 		</div>
 
 		<div class="view-make-listing">
 			<!-- Will need to figure out how to submit form with page... -->
-			<form enctype="multipart/form-data" id="data" @submit.prevent="uploadImage()">
+			<form enctype="multipart/form-data" id="imgData">
 				<input type="file" name="images" accept="image/jpeg, image.png">
+			</form>
+		</div>
+
+		<div class="view-make-listing">
+			<form enctype="multipart/form-data" id="fileData">
+				<input type="file" name="files" accept="model/stl">
 			</form>
 		</div>
 

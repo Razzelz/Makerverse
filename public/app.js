@@ -4,11 +4,13 @@ Vue.createApp({
     data() {
         return {
 		page: "home",
+                showPrintDetails: "hidden",
 		makes: [],
 		filteredMakes: [],
 		selectedMake: [],
 		search: "",
                 current_user: {
+                        userId : "",
                         username: "",
                         email: "",
                         password: ""
@@ -20,7 +22,29 @@ Vue.createApp({
                 },
                 request: "hide",
                 authModal: false,
-                authType: "up"
+                authType: "up",
+                uneditedPhotoNames: {},
+                uneditedFileNames: {},
+                newMake: {                       
+                        title: "",
+                        descriptions: "",
+                        photos: [],
+                        files: [],
+                        components: "",
+                        printerSetup: [],
+                        likes: [],
+                        user: ""
+                },
+                newPrintSetup: {
+                        title: "",
+                        user: "",
+                        nozzleTemp: "",
+                        bedTemp: "",
+                        layerThickness: "",
+                        printSpeed: "",
+                        other: "",
+                        likes: "",
+                }
         }
     },
     methods : {
@@ -28,6 +52,8 @@ Vue.createApp({
                     fetch("http://localhost:8080/blueprints/")
                             .then(response => response.json()).then((data) => {
                                 for (item of data) {
+                                        this.uneditedPhotoNames[item._id] = item.photos;
+                                        this.uneditedFileNames[item._id] = item.files;
                                         let updatedPhotos = []
                                         for (photo of item.photos) {
                                                 updatedPhotos.push(URL + "imagedownload/" + photo)
@@ -45,25 +71,113 @@ Vue.createApp({
 				    console.log(this.makes);
                             })
             },
-            updateMake: function(make) { //Not Finished
-                //Need to convert image and file names back to original...RIP
-                var updatedMake = make;
+            updateMake: function(make) {
+                var updatedMake = {
+                        title: make.title,
+                        description: make.description,
+                        photos: uneditedPhotoNames[make._id],
+                        files: uneditedFileNames[make._id],
+                        components: make.components,
+                        printerSetup: make.printerSetup,
+                        likes: make.likes,
+                        user: make.user
+                };
+
                 var myHeaders = new Headers();
                 myHeaders.append("Content-Type" , "application/json");
-
                 var options = {
                         method: "PUT",
                         body: updatedMake,
                         headers: myHeaders
                 };
 
-                var makeId = updatedMake._id
+                var makeId = updatedMake._id;
+                fetch(`http://localhost:8080/blueprints/${makeId}` , options)
+                .then((response) => {
+                        if (response.status == 200) {
+                                console.log("Make Updated")
+                        }
+                        else {
+                                alert("Unable to Update Make")
+                        }
+                })
+            },
+            uploadFile: function() {
+                var formData = new FormData(fileData);
+                options = {
+                        method: "POST",
+                        body: formData,
+                };
+
+                fetch(URL + "files" , options)
+                .then(response => response.json())
+                .then(data => {
+                        var info = document.querySelector("#fileData");
+                        info.reset();
+                        return data.filename;
+                })
+            },
+            uploadPhoto: function() {
+                var formData = new FormData(imgData);
+                options = {
+                        method: "POST",
+                        body: formData,
+                };
+
+                fetch(URL + "images" , options)
+                .then(response => response.json())
+                .then(data => {
+                        var info = document.querySelector("#imgData");
+                        info.reset();
+                        return data.filename;
+                })
+            },
+            createMake: function() {
+                filename = uploadFile();
+                photoName = uploadPhoto();
+
+                newMake.photos.push(photoName);
+                newMake.files.push(filename);
+                newMake.user = current_user.userId;
+
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type" , "application/json");
+
+                var options = {
+                        method: "POST",
+                        body: newMake,
+                        headers: myHeaders
+                };
+
+                fetch("http://localhost:8080/blueprints" , options)
+                .then((response) => {
+                        if (response.status == 201) {
+                                console.log("Blueprint Created")
+                        }
+                        else {
+                                alert("Unable to Create Blueprint")
+                        }
+                })
+            },
+            createPrintSetup: function() {
+                this.newPrintSetup.user = current_user.userId;
+                this.likes = [];
+
             },
 	    viewMake: function(make) {
 		    this.page = 'viewMake';
                     this.selectedMake = make;
 		    console.log(this.selectedMake);
 	    },
+            likePrintSetup: function() {
+                if (this.current_user.username == "") {
+                        this.signInRequest
+                        return
+                }
+                else {
+
+                }
+            },
 	    likeMake: function(make) {
                 if (this.current_user.username == "") {
                         this.signInRequest()
@@ -73,9 +187,11 @@ Vue.createApp({
                         index = make.likes.indexOf(this.current_user.username);
                         if (index < 0) {
                                 make.likes.push(this.current_user.username);
+                                this.updateMake(this.current_user);
                         }
                         else {
                                 make.likes.splice(index, 1);
+                                this.updateMake(this.current_user);
                         }
                 }
 	    },
@@ -85,8 +201,8 @@ Vue.createApp({
                         this.request = "hide"
                 }, 3000)
         },
-	    downloadMake: function() {
-		    console.log("This downloads a make");
+	    displayPrintDetails: function() {
+		    console.log("This displays print details");
 	    },
 	    home: function() {
                 // will need to be changed when sign in is functional
@@ -143,6 +259,7 @@ Vue.createApp({
                                                 data = JSON.parse(data);
                                                 this.page = "home",
                                                 this.authModal = false,
+                                                this.current_user.userId = data.userId
                                                 this.current_user.username = data.username
                                                 this.current_user.email = this.user_auth.email;
                                                 this.user_auth = {
