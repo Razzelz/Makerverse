@@ -169,13 +169,13 @@ Vue.createApp({
                     this.selectedMake = make;
 		    console.log(this.selectedMake);
 	    },
-            likePrintSetup: function() {
+            likePrintSetup: function(printSetup) {
                 if (this.current_user.username == "") {
                         this.signInRequest
                         return
                 }
                 else {
-
+                        
                 }
             },
 	    likeMake: function(make) {
@@ -202,7 +202,6 @@ Vue.createApp({
                 }, 3000)
         },
 	    displayPrintDetails: function() {
-		    console.log("This displays print details");
 	    },
 	    home: function() {
                 // will need to be changed when sign in is functional
