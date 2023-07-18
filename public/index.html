@@ -141,7 +141,6 @@
 
 	<div v-show="authModal" class="auth-modal">
 		<div class="auth-image-cont">
-			<img src="gear.svg">
 		</div>
 		<div v-if="authType == 'in'" class="auth-parent">
 			<h1>Welcome Back to Makerverse</h1>
@@ -169,26 +168,29 @@
 	</div>
 
 	<div v-if="page === 'create'" class="view-make-page">
-		<div class="view-make-listing">
-			<input type="text" placeholder="Make Name" v-model="newMake.title">
-			<input type="text" placeholder="Description" v-model="newMake.description">
-		</div>
+		<div class="back-button" @click="home()">Back</div>
+		<div class="make-listing">
+			<div class="make-details">
+				<input type="text" placeholder="Make Name" v-model="newMake.title">
+				<input type="text" placeholder="Description" v-model="newMake.description">
+			</div>
 
-		<div class="view-make-listing">
-			<!-- Will need to figure out how to submit form with page... -->
-			<form enctype="multipart/form-data" id="imgData">
-				<input type="file" name="images" accept="image/jpeg, image.png">
-			</form>
-		</div>
+			<div class="make-details">
+				<!-- Will need to figure out how to submit form with page... -->
+				<form enctype="multipart/form-data" id="imgData">
+					<input type="file" name="images" accept="image/jpeg, image.png">
+				</form>
+			</div>
 
-		<div class="view-make-listing">
-			<form enctype="multipart/form-data" id="fileData">
-				<input type="file" name="files" accept="model/stl">
-			</form>
-		</div>
+			<div class="make-details">
+				<form enctype="multipart/form-data" id="fileData">
+					<input type="file" name="files" accept="model/stl">
+				</form>
+			</div>
 
-		<div class="view-make-listing">
-			<input type="text" placeholder="Required Components">
+			<div class="make-details">
+				<input type="text" placeholder="Required Components">
+			</div>
 		</div>
 
 		<!-- Maybe a section for adding personal printer setup -->

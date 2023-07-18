@@ -3,7 +3,7 @@ const URL = "http://localhost:8080/"
 Vue.createApp({
     data() {
         return {
-		page: "home",
+		page: "create",
                 showPrintDetails: "hidden",
 		makes: [],
 		filteredMakes: [],
@@ -72,22 +72,26 @@ Vue.createApp({
                             })
             },
             updateMake: function(make) {
+
                 var updatedMake = {
+                        _id: make._id,
                         title: make.title,
                         description: make.description,
-                        photos: uneditedPhotoNames[make._id],
-                        files: uneditedFileNames[make._id],
+                        photos: this.uneditedPhotoNames[make._id],
+                        files: this.uneditedFileNames[make._id],
                         components: make.components,
-                        printerSetup: make.printerSetup,
+                        printSetup: make.printSetup,
                         likes: make.likes,
                         user: make.user
                 };
+
+                console.log(updatedMake)
 
                 var myHeaders = new Headers();
                 myHeaders.append("Content-Type" , "application/json");
                 var options = {
                         method: "PUT",
-                        body: updatedMake,
+                        body: JSON.stringify(updatedMake),
                         headers: myHeaders
                 };
 
@@ -187,11 +191,11 @@ Vue.createApp({
                         index = make.likes.indexOf(this.current_user.username);
                         if (index < 0) {
                                 make.likes.push(this.current_user.username);
-                                this.updateMake(this.current_user);
+                                this.updateMake(make);
                         }
                         else {
                                 make.likes.splice(index, 1);
-                                this.updateMake(this.current_user);
+                                this.updateMake(make);
                         }
                 }
 	    },
