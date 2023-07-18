@@ -3,7 +3,7 @@ const URL = "http://localhost:8080/"
 Vue.createApp({
     data() {
         return {
-		page: "create",
+		page: "home",
                 showPrintDetails: "hidden",
 		makes: [],
 		filteredMakes: [],
