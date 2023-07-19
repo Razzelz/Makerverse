@@ -133,7 +133,7 @@ Vue.createApp({
                 };
 
                 var printerId = updatedPrintSetup._id;
-                fetch(`http://localhost:8080/blueprints/${printerId}` , options)
+                fetch(`http://localhost:8080/printers/${printerId}` , options)
                 .then((response) => {
                         if (response.status == 200) {
                                 console.log("Printer setup Updated")
@@ -210,7 +210,6 @@ Vue.createApp({
                     this.selectedMake = make;
 	    },
             likePrintSetup: function(printer) {
-                console.log(this.current_user.username);
                 if (this.current_user.username == "") {
                         this.signInRequest
                         return
@@ -221,7 +220,7 @@ Vue.createApp({
                                 printer.likes.push(this.current_user.username);
                                 this.updatePrintSetup(printer);
                         } else {
-                                printer.like.splice(index, 1);
+                                printer.likes.splice(index, 1);
                                 this.updatePrintSetup(printer);
                         }
                 }

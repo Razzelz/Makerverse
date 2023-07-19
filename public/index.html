@@ -33,16 +33,16 @@
 				<div class="your-makes-btn" @click="viewYourMakes()" v-else>Your Makes</div>
 				<a class="sign-up" href="#" @click="signOutModal()">Sign Out</a>
 				<div class="sign-out" v-if="signOut">
-					<h2>Are You Sure You Want To Sign Out</h2>
+					<h2>Are you sure you want to sign out?</h2>
 					<div links>
-						<button class="sign-up" @click="signOutUser()">Sign Out</button>
-						<button class="your-makes-btn" @click="signOutModal()">Cancel</button>
+						<button class="sign-out-modal" @click="signOutUser()">Sign Out</button>
+						<button class="cancel-btn" @click="signOutModal()">Cancel</button>
 					</div>
 				</div>
 			</div>
 
 			<div class="links" v-else>
-				<a href="#" @click="toSignIn()">Sign in</a>
+				<a class="sign-in" href="#" @click="toSignIn()">Sign in</a>
 				<a class="sign-up" href="#" @click="toSignUp()">Sign Up</a>
 				<div v-if="request === 'show'" class="sign-in-request">Please Sign In</div>
 			</div>
@@ -93,12 +93,12 @@
 			<div class="print-setup" v-for="printer in selectedMake.printSetup">
 				<div class="setup-title" @click="displayPrintDetails()" v-if="showPrintDetails === 'hidden'"><strong>{{printer.title}}</strong>&and;
 					<div class="print-setup-likes"v-if="!printer.likes.includes(current_user.username)" @click="likePrintSetup(printer)"><img src="images/heart.svg" alt="Like" height="20" width="20"></div>
-					<div class="print-setup-likes" v-else @click="likePrintSetup(printer)"><img src="images/heart-filled.svg" alt="Like" height="40" width="40"></div>
+					<div class="print-setup-likes" v-else @click="likePrintSetup(printer)"><img src="images/heart-filled.svg" alt="Like" height="20" width="20"></div>
 					<div class="print-setup-likes">{{printer.likes.length}}</div>
 				</div>
 				<div class="setup-title" @click="displayPrintDetails()" v-else="showPrintDetails === 'shown'"><strong>{{printer.title}}</strong>&or;
 					<div class="print-setup-likes"v-if="!printer.likes.includes(current_user.username)" @click="likePrintSetup(printer)"><img src="images/heart.svg" alt="Like" height="20" width="20"></div>
-					<div class="print-setup-likes" v-else @click="likePrintSetup(printer)"><img src="images/heart-filled.svg" alt="Like"></div>
+					<div class="print-setup-likes" v-else @click="likePrintSetup(printer)"><img src="images/heart-filled.svg" alt="Like" height="20" width="20"></div>
 					<div class="print-setup-likes">{{printer.likes.length}}</div>
 					<br>
 					<div class="print-specs">
