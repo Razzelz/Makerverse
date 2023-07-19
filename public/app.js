@@ -8,12 +8,14 @@ Vue.createApp({
 		makes: [],
 		filteredMakes: [],
 		selectedMake: [],
+                selectedPrintSetup: [],
 		search: "",
                 current_user: {
                         userId : "",
                         username: "",
                         email: "",
-                        password: ""
+                        password: "",
+                        userMakes: [],
                 },
                 user_auth: {
                         username: "",
@@ -44,7 +46,8 @@ Vue.createApp({
                         printSpeed: "",
                         other: "",
                         likes: "",
-                }
+                },
+                signOut: false,
         }
     },
     methods : {
@@ -103,6 +106,40 @@ Vue.createApp({
                         }
                         else {
                                 alert("Unable to Update Make")
+                        }
+                })
+            },
+            updatePrintSetup: function(printer) {
+
+                var updatedPrintSetup = {
+                        _id: printer._id,
+                        title: printer.title,
+                        user: printer.user,
+                        nozzleTemp: printer.nozzleTemp,
+                        bedTemp: printer.bedTemp,
+                        layerThickness: printer.layerThickness,
+                        printSpeed: printer.printSpeed,
+                        other: printer.other
+                };
+
+                console.log(updatedPrintSetup)
+
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type" , "application/json");
+                var options = {
+                        method: "PUT",
+                        body: JSON.stringify(updatedPrintSetup),
+                        headers: myHeaders
+                };
+
+                var printerId = updatedPrintSetup._id;
+                fetch(`http://localhost:8080/blueprints/${printerId}` , options)
+                .then((response) => {
+                        if (response.status == 200) {
+                                console.log("Printer setup Updated")
+                        }
+                        else {
+                                alert("Unable to Update Printer setup")
                         }
                 })
             },
@@ -171,15 +208,22 @@ Vue.createApp({
 	    viewMake: function(make) {
 		    this.page = 'viewMake';
                     this.selectedMake = make;
-		    console.log(this.selectedMake);
 	    },
-            likePrintSetup: function(printSetup) {
+            likePrintSetup: function(printer) {
+                console.log(this.current_user.username);
                 if (this.current_user.username == "") {
                         this.signInRequest
                         return
                 }
                 else {
-                        
+                        index = printer.likes.indexOf(this.current_user.username);
+                        if (index < 0) {
+                                printer.likes.push(this.current_user.username);
+                                this.updatePrintSetup(printer);
+                        } else {
+                                printer.like.splice(index, 1);
+                                this.updatePrintSetup(printer);
+                        }
                 }
             },
 	    likeMake: function(make) {
@@ -206,13 +250,17 @@ Vue.createApp({
                 }, 3000)
         },
 	    displayPrintDetails: function() {
+                if (this.showPrintDetails == "hidden") {
+                        this.showPrintDetails = "shown";
+                } else if (this.showPrintDetails =="shown") {
+                        this.showPrintDetails = "hidden";
+                }
 	    },
 	    home: function() {
                 // will need to be changed when sign in is functional
                 this.selectedMake = [];
                 this.authModal = false;
                 this.page = "home"
-		    console.log("This takes to home page");
 	    },
             toSignIn: function () {
                 this.authModal = true;
@@ -265,6 +313,11 @@ Vue.createApp({
                                                 this.current_user.userId = data.userId
                                                 this.current_user.username = data.username
                                                 this.current_user.email = this.user_auth.email;
+                                                for (make of this.makes) {
+                                                        if (this.current_user.userId === make.user._id) {
+                                                                this.current_user.userMakes.push(make)
+                                                        }
+                                                };
                                                 this.user_auth = {
                                                         username: "",
                                                         email: "",
@@ -281,6 +334,33 @@ Vue.createApp({
                         }
                 })
             },
+            signOutModal: function() {
+                this.signOut = !this.signOut
+            },
+            signOutUser: function() {
+                var options = {
+                        method: "DELETE",
+                        credentials: "include",
+                    };
+        
+                    fetch(URL + "session", options).then(response => {
+                        this.page = "home";
+                        this.current_user = {
+                                userId: "",
+                                username: "",
+                                email: "",
+                                password: "",
+                                userMakes: [],
+                        };
+                    })
+                    this.signOut = false;
+            },
+            viewYourMakes: function() {
+                this.page = 'yourMakes'
+            },
+            toCreate: function() {
+                this.page = "create"
+            }
     },
     created : function() {
 	    this.getMakes();
@@ -291,5 +371,5 @@ Vue.createApp({
                         return make.title.toLowerCase().includes(newSearch.toLowerCase());
                 });
         }
-}
+},
 }).mount("#app");

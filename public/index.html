@@ -19,16 +19,29 @@
     <div id="app">
 		<nav class="top-navbar">
 			<div @click="home()" style="cursor: pointer;">
-				<img class="logo" src="gear.svg" alt="Gear" @click="home()">
+				<img class="logo" src="images/gear.svg" alt="Gear" @click="home()">
 				<h1 @click="home()">Makerverse</h1>
 			</div>
 
 			<div class="search" v-if="page === 'home'">
 				<input type="text" v-model="search" placeholder="Search..."></input>
-				<img src="search.svg" alt="Search Icon" height="20" width="20">
+				<img src="images/search.svg" alt="Search Icon" height="20" width="20">
 			</div>
 
-			<div class="links">
+			<div class="authed-links" v-if="current_user.username">
+				<div class="your-makes-btn" @click="home()" v-if="page != 'home'">Home</div>
+				<div class="your-makes-btn" @click="viewYourMakes()" v-else>Your Makes</div>
+				<a class="sign-up" href="#" @click="signOutModal()">Sign Out</a>
+				<div class="sign-out" v-if="signOut">
+					<h2>Are You Sure You Want To Sign Out</h2>
+					<div links>
+						<button class="sign-up" @click="signOutUser()">Sign Out</button>
+						<button class="your-makes-btn" @click="signOutModal()">Cancel</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="links" v-else>
 				<a href="#" @click="toSignIn()">Sign in</a>
 				<a class="sign-up" href="#" @click="toSignUp()">Sign Up</a>
 				<div v-if="request === 'show'" class="sign-in-request">Please Sign In</div>
@@ -37,7 +50,7 @@
 
 		<div class="search-mobile" v-if="page === 'home'">
 			<input type="text" v-model="search" placeholder="Search..."></input>
-			<img src="search.svg" alt="Search Icon" height="20" width="20">
+			<img src="images/search.svg" alt="Search Icon" height="20" width="20">
 		</div>
 		
 
@@ -50,14 +63,14 @@
 
 		    <div class="flex-parent">
 				<div class="flex-child">
-					<div v-if="!selectedMake.likes.includes(current_user.username)" class="make-likes" @click="likeMake(selectedMake)"><img src="heart.svg" alt="Like" height="40" width="40"></div>
-					<div v-else class="make-likes" @click="likeMake(selectedMake)"><img src="heart-filled.svg" alt="Like" height="40" width="40"></div>
+					<div v-if="!selectedMake.likes.includes(current_user.username)" class="make-likes" @click="likeMake(selectedMake)"><img src="images/heart.svg" alt="Like" height="40" width="40"></div>
+					<div v-else class="make-likes" @click="likeMake(selectedMake)"><img src="images/heart-filled.svg" alt="Like" height="40" width="40"></div>
 					<div class="like-count">{{selectedMake.likes.length}}</div>
 				</div>
 
 				<div class="flex-child">
 					<div class="download-btn"><a :href="selectedMake.files[0]" :download="selectedMake.files[0].substr(49)">
-						<img class="download-icon" src="download.svg" alt="Download">
+						<img class="download-icon" src="images/download.svg" alt="Download">
 						<span>Download</span></a>
 					</div>
 				</div>
@@ -75,19 +88,56 @@
 
 	<div class="view-make-page" v-if="page === 'viewMake'">
 		<div class="spacer"></div>
-		<div class="make-details">
+		<div class="print-details">
 			<div class="view-make-title">Printer Setups</div>
 			<div class="print-setup" v-for="printer in selectedMake.printSetup">
-				<span @click="displayPrintDetails()" v-if="showPrintDetails === 'hidden'">{{printer.title}}&and;</span>
-				<span>Nozzle Temp:</span>
-				<span>Bed Temp</span>
-				<span>Layer Thickness</span>
-				<span>Print Speed</span>
-				<span>Other</span>
-				<span @click="displayPrintDetails()" v-else="showPrintDetails === 'shown'">{{printer.title}}&or;</span>
+				<div class="setup-title" @click="displayPrintDetails()" v-if="showPrintDetails === 'hidden'"><strong>{{printer.title}}</strong>&and;
+					<div class="print-setup-likes"v-if="!printer.likes.includes(current_user.username)" @click="likePrintSetup(printer)"><img src="images/heart.svg" alt="Like" height="20" width="20"></div>
+					<div class="print-setup-likes" v-else @click="likePrintSetup(printer)"><img src="images/heart-filled.svg" alt="Like" height="40" width="40"></div>
+					<div class="print-setup-likes">{{printer.likes.length}}</div>
+				</div>
+				<div class="setup-title" @click="displayPrintDetails()" v-else="showPrintDetails === 'shown'"><strong>{{printer.title}}</strong>&or;
+					<div class="print-setup-likes"v-if="!printer.likes.includes(current_user.username)" @click="likePrintSetup(printer)"><img src="images/heart.svg" alt="Like" height="20" width="20"></div>
+					<div class="print-setup-likes" v-else @click="likePrintSetup(printer)"><img src="images/heart-filled.svg" alt="Like"></div>
+					<div class="print-setup-likes">{{printer.likes.length}}</div>
+					<br>
+					<div class="print-specs">
+						<span>Nozzle Temp: {{printer.nozzleTemp}} &deg;C</span><br>
+						<span>Bed Temp: {{printer.bedTemp}} &deg;C</span><br>
+						<span>Layer Thickness: {{printer.layerThickness}} mm</span><br>
+						<span>Print Speed: {{printer.printSpeed}} mm/s</span><br>
+						<span>Other: {{printer.other}}</span><br>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
+		<div v-if="page === 'yourMakes'">
+			<div class="your-makes-header">
+				<h1>Your Makes:</h1>
+					<div class="new-make-btn" @click="toCreate()">+ New Make</div>
+			</div>
+			<div class="makes">
+				<div v-for="make in current_user.userMakes" class="make-listing">
+					<div class="make-title" @click="viewMake()">{{make.title}}</div>
+					<div class="make-creator" @click="viewMake()">Creator: {{make.user.username}}</div>
+					<div class="a"><img :src="make.photos[0]" alt="Make Object" @click="viewMake()"></div>
+	
+					<div class="flex-parent">
+						<div class="flex-child">
+						<div v-if="!make.likes.includes(current_user.username)" class="make-likes" @click="likeMake()"><img src="images/heart.svg" alt="Like" height="40" width="40"></div>
+						<div v-else class="make-likes" @click="likeMake()"><img src="images/heart-filled.svg" alt="Like" height="40" width="40"></div>
+							<div class="like-count">{{make.likes.length}}</div>
+						</div>
+	
+						<div class="flex-child">
+							<div class="download-btn" style="text-align: center;">Edit</div>
+							<!-- Need an edit symbol Something like a pencil -->
+						</div>
+						</div>
+				</div>
+			</div>
+		</div>
 
        <div class="makes" v-else>
 
@@ -100,14 +150,14 @@
 
 		       <div class="flex-parent">
 			       <div class="flex-child">
-					<div v-if="!make.likes.includes(current_user.username)" class="make-likes" @click="likeMake()"><img src="heart.svg" alt="Like" height="40" width="40"></div>
-					<div v-else class="make-likes" @click="likeMake()"><img src="heart-filled.svg" alt="Like" height="40" width="40"></div>
+					<div v-if="!make.likes.includes(current_user.username)" class="make-likes" @click="likeMake()"><img src="images/heart.svg" alt="Like" height="40" width="40"></div>
+					<div v-else class="make-likes" @click="likeMake()"><img src="images/heart-filled.svg" alt="Like" height="40" width="40"></div>
 				       <div class="like-count">{{make.likes.length}}</div>
 			       </div>
 
 			       <div class="flex-child">
 						<div class="download-btn"><a :href="make.files[0]" :download="make.files[0].substr(49)">
-							<img class="download-icon" src="download.svg" alt="Download">
+							<img class="download-icon" src="images/download.svg" alt="Download">
 							<span>Download</span>
 						</a></div>
 			    	</div>
@@ -124,14 +174,14 @@
 
 		       <div class="flex-parent">
 			       <div class="flex-child">
-					<div v-if="!make.likes.includes(current_user.username)" class="make-likes" @click="likeMake(make)"><img src="heart.svg" alt="Like" height="40" width="40"></div>
-					<div v-else class="make-likes" @click="likeMake(make)"><img src="heart-filled.svg" alt="Like" height="40" width="40"></div>
+					<div v-if="!make.likes.includes(current_user.username)" class="make-likes" @click="likeMake(make)"><img src="images/heart.svg" alt="Like" height="40" width="40"></div>
+					<div v-else class="make-likes" @click="likeMake(make)"><img src="images/heart-filled.svg" alt="Like" height="40" width="40"></div>
 				       <div class="like-count">{{make.likes.length}}</div>
 			       </div>
 
 			       <div class="flex-child">
 				       <div class="download-btn"><a :href="make.files[0]" :download="make.files[0].substr(49)">
-					       <img class="download-icon" src="download.svg" alt="Download">
+					       <img class="download-icon" src="images/download.svg" alt="Download">
 					       <span>Download</span>
 					   </a></div>
 			       </div>
@@ -146,7 +196,7 @@
 			<h1>Welcome Back to Makerverse</h1>
 			<div class="make-title">Sign In</div>
 			<input type="email" placeholder="E-Mail" v-model="user_auth.email">
-			<input type="text" placeholder="Password" v-model="user_auth.password">
+			<input type="password" placeholder="Password" v-model="user_auth.password">
 			<div>
 				<p>Not a Member? <a class="switch-auth" @click="toSignUp">Sign Up</a></p>
 			</div>
@@ -156,7 +206,7 @@
 			<h1>Welcome to Makerverse</h1>
 			<input type="text" placeholder="Username" v-model="user_auth.username">
 			<input type="email" placeholder="E-Mail" v-model="user_auth.email">
-			<input type="text" placeholder="Password" v-model="user_auth.password">
+			<input type="password" placeholder="Password" v-model="user_auth.password">
 			<div>
 				<p>Already a Member? <a class="switch-auth" @click="toSignIn()">Sign In</a></p>
 			</div>
@@ -168,28 +218,46 @@
 	</div>
 
 	<div v-if="page === 'create'" class="view-make-page">
-		<div class="back-button" @click="home()">Back</div>
-		<div class="make-listing">
-			<div class="make-details">
-				<input type="text" placeholder="Make Name" v-model="newMake.title">
-				<input type="text" placeholder="Description" v-model="newMake.description">
+		<div class="back-button" @click="viewYourMakes()">Back</div>
+		<div>
+			<div class="new-make-display">
+				<div>Make Name</div>
+				<input type="text" v-model="newMake.title">
+				<div>Description</div>
+				<textarea type="text" v-model="newMake.description"></textarea>
 			</div>
 
-			<div class="make-details">
+			<div class="new-make-display">
+				<div>Select an Image</div>
 				<!-- Will need to figure out how to submit form with page... -->
 				<form enctype="multipart/form-data" id="imgData">
 					<input type="file" name="images" accept="image/jpeg, image.png">
 				</form>
-			</div>
-
-			<div class="make-details">
+				<div>Select a File (.stl)</div>
 				<form enctype="multipart/form-data" id="fileData">
-					<input type="file" name="files" accept="model/stl">
+					<input type="file" name="files" accept=".stl">
 				</form>
 			</div>
 
-			<div class="make-details">
-				<input type="text" placeholder="Required Components">
+			<div class="new-make-display">
+				<div>Required Components</div>
+				<textarea type="text" rows="4" cols="30" v-model="newMake.components"></textarea>
+			</div>
+
+			<div class="new-make-display">
+				<h2>Your Preferred Setup (Optional)</h2>
+				<div>Printer Name</div>
+				<input type="text">
+				<div>Nozzle (Temp &deg;C)</div>
+				<input type="number">
+				<div>Bed (Temp &deg;C)</div>
+				<input type="number">
+				<div>Layer Thickness (mm)</div>
+				<input type="number">
+				<div>Print Speed (mm/s)</div>
+				<input type="number">
+				<div>Other</div>
+				<textarea type="text"></textarea>
 			</div>
 		</div>
 

@@ -82,6 +82,21 @@ a:visited {
 	margin-left: 15px;
 }
 
+.authed-links {
+	display: flex;
+	flex-direction: row;
+}
+
+.your-makes-btn {
+	border: 2px solid var(--yellow);
+	background-color: var(--grey);
+	border-radius: 5px;
+	padding: 8px 15px 8px 15px;
+	margin-left: 15px;
+	color: var(--yellow);
+	cursor: pointer;
+}
+
 .logo {
 	height: 100px;
 	width: 100px;
@@ -111,8 +126,8 @@ a:visited {
 .make-listing {
 	color: var(--lt-grey);
 	margin-top: 50px;
-	margin-left: 30px;
-	margin-right: 30px;
+	margin-left: 20px;
+	margin-right: 20px;
 	background-color: var(--grey);
 	font-size: 18px;
 	width: 350px;
@@ -139,12 +154,35 @@ a:visited {
 	width: 350px;
 }
 
+.print-details{
+	color: var(--lt-grey);
+	margin-top: 30px;
+	margin-left: 30px;
+	margin-right: 30px;
+	padding-bottom: 30px;
+	background-color: var(--grey);
+	font-size: 18px;
+	width: 350px;
+}
+
+.print-specs {
+	padding-top: 5px;
+	padding-left: 10px;
+	width: 100%;	
+}
+
 .description-text {
 	padding: 15px 15px 15px 15px;
 }
 
 .print-setup {
-	padding: 15px 15px 5px 15px;
+	padding: 15px 15px 10px 15px;
+}
+
+.print-setup-likes {
+	float: right;
+	font-size: 18px;
+	padding-right: 5px;
 }
 
 .view-make-page {
@@ -325,7 +363,7 @@ a:visited {
 	position: fixed;
 	top: 10px;
 	right: 15px;
-	background-color: var(--dk-grey);
+	background-color: transparent;
 	border: var(--yellow) 1px solid;
 	padding: 5px 10px;
 	font-size: 20px;
@@ -338,6 +376,78 @@ a:visited {
 .home-btn:hover {
 	background-color: var(--yellow);	
 	color: var(--dk-grey);
+}
+
+.sign-out {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50% , -50%);
+	width: 35%;
+	height: 25%;
+	background-color: whitesmoke;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	padding: 10px;
+	border-radius: 10px;
+	color: var(--dk-grey)
+}
+
+h2 {
+	text-align: center;
+}
+
+.your-makes-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin: 5px 10px;
+}
+
+.new-make-btn {
+	background-color: var(--dk-grey);
+	border: solid 2px var(--lt-grey);
+	color: var(--lt-grey);
+	padding: 5px 15px;
+	cursor: pointer;
+	border-radius: 5px;
+	top: 50%;
+}
+
+.new-make-btn:hover {
+	background-color: var(--lt-grey);
+	color: var(--dk-grey);
+}
+
+.new-make-display {
+	color: var(--lt-grey);
+	margin-top: 30px;
+	margin-left: 30px;
+	margin-right: 30px;
+	padding-bottom: 30px;
+	padding: 20px;
+	background-color: var(--grey);
+	font-size: 18px;
+	width: 50vw;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+textarea {
+	border: 3px solid var(--dk-grey);
+	border-radius: 5px;
+	color: var(--lt-grey);
+	background: transparent;
+	font-size: 18px;
+	padding: 5px;
+	margin: 5px;
+	resize: none;
+	height: 200px;
 }
 
 /* Mobile view down here */
@@ -388,7 +498,6 @@ a:visited {
 
 	a:visited {
 		text-decoration: none;
-		color: var(--lt-grey);
 		font-size: 14px;
 	}
 
@@ -403,6 +512,7 @@ a:visited {
 		margin-left: 10px;
 		text-decoration: none;
 		transition: 0.3s;
+		cursor: pointer;
 	}
 
 	.sign-up:hover {
