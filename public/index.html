@@ -247,18 +247,19 @@
 			<div class="new-make-display">
 				<h2>Your Preferred Setup (Optional)</h2>
 				<div>Printer Name</div>
-				<input type="text">
+				<input type="text" v-model="newPrintSetup.title">
 				<div>Nozzle (Temp &deg;C)</div>
-				<input type="number">
+				<input type="number" v-model="newPrintSetup.nozzleTemp">
 				<div>Bed (Temp &deg;C)</div>
-				<input type="number">
+				<input type="number" v-model="newPrintSetup.bedTemp">
 				<div>Layer Thickness (mm)</div>
-				<input type="number">
+				<input type="number" v-model="newPrintSetup.layerThickness">
 				<div>Print Speed (mm/s)</div>
-				<input type="number">
+				<input type="number" v-model="newPrintSetup.printSpeed">
 				<div>Other</div>
-				<textarea type="text"></textarea>
+				<textarea type="text" v-model="newPrintSetup.other"></textarea>
 			</div>
+			<div class="auth-btn" @click="createMake()">Save Make</div>
 		</div>
 
 		<!-- Maybe a section for adding personal printer setup -->

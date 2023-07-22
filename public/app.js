@@ -174,19 +174,22 @@ Vue.createApp({
                 })
             },
             createMake: function() {
-                filename = uploadFile();
-                photoName = uploadPhoto();
+                filename = this.uploadFile();
+                photoName = this.uploadPhoto();
 
-                newMake.photos.push(photoName);
-                newMake.files.push(filename);
-                newMake.user = current_user.userId;
+                this.newMake.photos.push(photoName);
+                this.newMake.files.push(filename);
+                this.newMake.user = this.current_user.userId;
+                this.newMake.printSetup = [this.newPrintSetup]
 
                 var myHeaders = new Headers();
                 myHeaders.append("Content-Type" , "application/json");
 
+                console.log(this.newMake)
+
                 var options = {
                         method: "POST",
-                        body: newMake,
+                        body: this.newMake,
                         headers: myHeaders
                 };
 
@@ -199,6 +202,7 @@ Vue.createApp({
                                 alert("Unable to Create Blueprint")
                         }
                 })
+
             },
             createPrintSetup: function() {
                 this.newPrintSetup.user = current_user.userId;
