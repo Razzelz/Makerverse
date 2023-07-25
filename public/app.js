@@ -1,4 +1,8 @@
-const URL = "https://makerverse.binary141.com"
+// Use this URL for when the website is running
+//const URL = "https://makerverse.binary141.com"
+
+//Use this URL for when hoting locally
+const URL = "http://localhost:8080"
 
 Vue.createApp({
     data() {
