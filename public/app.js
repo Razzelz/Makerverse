@@ -1,4 +1,4 @@
-const URL = "http://localhost:8080/"
+const URL = "https://makerverse.binary141.com"
 
 Vue.createApp({
     data() {
@@ -52,26 +52,29 @@ Vue.createApp({
     },
     methods : {
             getMakes: function() {
-                    fetch("http://localhost:8080/blueprints/")
+                    fetch(`${URL}/blueprints/`)
                             .then(response => response.json()).then((data) => {
+				console.log("Dee response: ", data);
                                 for (item of data) {
                                         this.uneditedPhotoNames[item._id] = item.photos;
                                         this.uneditedFileNames[item._id] = item.files;
                                         let updatedPhotos = []
                                         for (photo of item.photos) {
-                                                updatedPhotos.push(URL + "imagedownload/" + photo)
+                                                updatedPhotos.push(`${URL}/imagedownload/${photo}`)
+						console.log("Photots: ", photo);
                                         }
                                         item.photos = updatedPhotos
                                 }
                                 for (item of data) {
                                         let updatedFiles = []
                                         for (file of item.files) {
-                                                updatedFiles.push(URL + "filedownload/" + file)
+                                                updatedFiles.push(`${URL}/filedownload/${file}`)
                                         }
                                         item.files = updatedFiles
                                 }
                                     this.makes = data;
 				    console.log(this.makes);
+				    console.log("Why am I here?");
                             })
             },
             updateMake: function(make) {
@@ -99,7 +102,7 @@ Vue.createApp({
                 };
 
                 var makeId = updatedMake._id;
-                fetch(`http://localhost:8080/blueprints/${makeId}` , options)
+                fetch(`${URL}/blueprints/${makeId}` , options)
                 .then((response) => {
                         if (response.status == 200) {
                                 console.log("Make Updated")
@@ -133,7 +136,7 @@ Vue.createApp({
                 };
 
                 var printerId = updatedPrintSetup._id;
-                fetch(`http://localhost:8080/printers/${printerId}` , options)
+                fetch(`${URL}/printers/${printerId}` , options)
                 .then((response) => {
                         if (response.status == 200) {
                                 console.log("Printer setup Updated")
@@ -150,7 +153,7 @@ Vue.createApp({
                         body: formData,
                 };
 
-                fetch(URL + "files" , options)
+                fetch(`${URL}/files` , options)
                 .then(response => response.json())
                 .then(data => {
                         var info = document.querySelector("#fileData");
@@ -165,7 +168,7 @@ Vue.createApp({
                         body: formData,
                 };
 
-                fetch(URL + "images" , options)
+                fetch(`${URL}images` , options)
                 .then(response => response.json())
                 .then(data => {
                         var info = document.querySelector("#imgData");
@@ -193,7 +196,7 @@ Vue.createApp({
                         headers: myHeaders
                 };
 
-                fetch("http://localhost:8080/blueprints" , options)
+                fetch(`${URL}/blueprints` , options)
                 .then((response) => {
                         if (response.status == 201) {
                                 console.log("Blueprint Created")
@@ -283,7 +286,7 @@ Vue.createApp({
                         body: JSON.stringify(this.user_auth)
                 };
 
-                fetch(URL + "users", options)
+                fetch(`${URL}/users`, options)
                 .then((response) => {
                         if (response.status === 201) {
                                 console.log("Signup Complete")
@@ -305,7 +308,7 @@ Vue.createApp({
                         credentials: 'include'
                 };
 
-                fetch(URL + "session", options)
+                fetch(`${URL}/session`, options)
                 .then((response) => {
                         if (response.status === 201) {
                                 response.text().then(data => {
@@ -346,7 +349,7 @@ Vue.createApp({
                         credentials: "include",
                     };
         
-                    fetch(URL + "session", options).then(response => {
+                    fetch(`${URL}/session`, options).then(response => {
                         this.page = "home";
                         this.current_user = {
                                 userId: "",
