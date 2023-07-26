@@ -222,7 +222,7 @@ Vue.createApp({
 	    },
             likePrintSetup: function(printer) {
                 if (this.current_user.username == "") {
-                        this.signInRequest
+                        this.signInRequest();
                         return
                 }
                 else {

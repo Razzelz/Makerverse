@@ -91,15 +91,13 @@
 		<div class="print-details">
 			<div class="view-make-title">Printer Setups</div>
 			<div class="print-setup" v-for="printer in selectedMake.printSetup">
-				<div class="setup-title" @click="displayPrintDetails()" v-if="showPrintDetails === 'hidden'"><strong>{{printer.title}}</strong>&and;
-					<div class="print-setup-likes"v-if="!printer.likes.includes(current_user.username)" @click="likePrintSetup(printer)"><img src="images/heart.svg" alt="Like" height="20" width="20"></div>
-					<div class="print-setup-likes" v-else @click="likePrintSetup(printer)"><img src="images/heart-filled.svg" alt="Like" height="20" width="20"></div>
-					<div class="print-setup-likes">{{printer.likes.length}}</div>
+				<div class="print-setup-likes">
+					<div >{{printer.likes.length}}&nbsp;</div>
+					<div v-if="!printer.likes.includes(current_user.username)" @click="likePrintSetup(printer)"><img src="images/heart.svg" alt="Like" height="20" width="20"></div>
+					<div v-else @click="likePrintSetup(printer)"><img src="images/heart-filled.svg" alt="Like" height="20" width="20"></div>
 				</div>
-				<div class="setup-title" @click="displayPrintDetails()" v-else="showPrintDetails === 'shown'"><strong>{{printer.title}}</strong>&or;
-					<div class="print-setup-likes"v-if="!printer.likes.includes(current_user.username)" @click="likePrintSetup(printer)"><img src="images/heart.svg" alt="Like" height="20" width="20"></div>
-					<div class="print-setup-likes" v-else @click="likePrintSetup(printer)"><img src="images/heart-filled.svg" alt="Like" height="20" width="20"></div>
-					<div class="print-setup-likes">{{printer.likes.length}}</div>
+				<div class="setup-title" @click="displayPrintDetails()" v-if="showPrintDetails === 'hidden'"><strong>{{printer.title}}</strong>&nbsp;&and;</div>
+				<div class="setup-title" @click="displayPrintDetails()" v-else="showPrintDetails === 'shown'"><strong>{{printer.title}}</strong>&nbsp;&or;
 					<br>
 					<div class="print-specs">
 						<span>Nozzle Temp: {{printer.nozzleTemp}} &deg;C</span><br>
@@ -112,6 +110,14 @@
 			</div>
 		</div>
 	</div>
+	<div class="components" v-if="page === 'viewMake'">
+		<div class="spacer"></div>
+			<div class="make-details">
+				<div class="view-make-title">Components</div>
+				<div class="description-text">{{selectedMake.components}}</div>
+			</div>
+	</div>
+
 		<div v-if="page === 'yourMakes'">
 			<div class="your-makes-header">
 				<h1>Your Makes:</h1>

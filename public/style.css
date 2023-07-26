@@ -210,6 +210,12 @@ input {
 	width: 350px;
 }
 
+.components {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 50px;
+}
+
 .print-specs {
 	padding-top: 5px;
 	padding-left: 10px;
@@ -225,9 +231,9 @@ input {
 }
 
 .print-setup-likes {
+	display: flex;
+	flex-direction: row;
 	float: right;
-	font-size: 18px;
-	padding-right: 5px;
 }
 
 .view-make-page {
@@ -244,6 +250,7 @@ input {
 .view-make-title {
 	font-size: 30px;
 	padding: 15px 15px 5px;
+	color: var(--lt-grey);
 }
 
 .make-creator {
