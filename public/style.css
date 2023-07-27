@@ -210,6 +210,13 @@ input {
 	width: 350px;
 }
 
+.add-printer-btn {
+	float: right;
+	text-align: center;
+	font-size: 30px;
+	width: 30px;
+}
+
 .components {
 	display: flex;
 	justify-content: center;

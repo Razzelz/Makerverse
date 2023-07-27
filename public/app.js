@@ -212,10 +212,34 @@ Vue.createApp({
 
             },
             createPrintSetup: function() {
-                this.newPrintSetup.user = current_user.userId;
-                this.likes = [];
+		this.newPrintSetup.user = this.current_user.userId;
+		this.likes = [];
+
+		var myHeaders = new Headers();
+		myHeaders.append("Content-Type" , "application/json");
+
+		console.log(this.newPrintSetup);
+
+		var options = {
+			method: "POST",
+			body: this.newPrintSetup,
+			headers: myHeaders
+		};
+
+		fetch(`${URL}/printers` , options)
+		.then((response) => {
+			if (response.status == 201) {
+				console.log("Printer Setup Created")
+			}
+			else {
+				alert("Unable to Create Printer Setup")
+			}
+		})
 
             },
+	    addPrintSetup: function() {
+		    this.page = "addPrintSetup";
+	    },
 	    viewMake: function(make) {
 		    this.page = 'viewMake';
                     this.selectedMake = make;

@@ -52,6 +52,11 @@
 			<input type="text" v-model="search" placeholder="Search..."></input>
 			<img src="images/search.svg" alt="Search Icon" height="20" width="20">
 		</div>
+
+	<div v-if="page === 'addPrintSetup'">
+		<div class="add-print">
+		</div>
+	</div>
 		
 
 	<div class="view-make-page" v-if="page === 'viewMake'">
@@ -89,7 +94,9 @@
 	<div class="view-make-page" v-if="page === 'viewMake'">
 		<div class="spacer"></div>
 		<div class="print-details">
-			<div class="view-make-title">Printer Setups</div>
+			<div class="view-make-title">Printer Setups
+				<div @click="addPrintSetup()" class="add-printer-btn">+</div>
+			</div>
 			<div class="print-setup" v-for="printer in selectedMake.printSetup">
 				<div class="print-setup-likes">
 					<div >{{printer.likes.length}}&nbsp;</div>
@@ -117,6 +124,7 @@
 				<div class="description-text">{{selectedMake.components}}</div>
 			</div>
 	</div>
+
 
 		<div v-if="page === 'yourMakes'">
 			<div class="your-makes-header">
